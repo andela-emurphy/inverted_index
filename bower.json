@@ -1,0 +1,21 @@
+{
+  "name": "inverted-index",
+  "description": "inverted index",
+  "main": "index.js",
+  "authors": [
+    "enaho murphy"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/enahomurphy/inverted_index",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}
