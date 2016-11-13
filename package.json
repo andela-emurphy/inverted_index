@@ -18,9 +18,15 @@
   "homepage": "https://github.com/enahomurphy/inverted_index#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-angular-filesort": "^1.1.1",
     "gulp-inject": "^4.1.0",
+    "gulp-jshint": "^2.0.2",
+    "gulp-natural-sort": "^0.1.1",
     "gulp-wiredep": "0.0.0",
-    "jasmine": "^2.5.2"
+    "jasmine": "^2.5.2",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "wiredep": "^4.0.0"
   },
   "dependencies": {
     "browser-sync": "^2.17.5",

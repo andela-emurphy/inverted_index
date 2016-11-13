@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var books = [
   {
     "title": "Alice in Wonderland",
@@ -10,15 +11,18 @@ var books = [
   }
 ]
 
+
 class InvertedIndex {
 
-
+  constructor() {
+    this.indexedFiles = this.indexedFiles || []
+  }
 
 
   strip(text) {
     return text.toLowerCase()
                 .replace(/[^a-z0-9\s]/g, '')
-                .split(/\s+/)
+                .split(/\s+/g)
   }
 
   createIndex(data, cb) {
@@ -39,9 +43,7 @@ class InvertedIndex {
         })
       }
     }
-    return {
-      terms: terms
-    }
+    this.indexedFiles.push(terms)
   }
 
   getIndex() {
@@ -49,11 +51,6 @@ class InvertedIndex {
   }
 
   searchIndex() {
-    
+
   }
 }
-
-var index = new InvertedIndex()
-index.getIndex(books)
-console.log(index.createIndex(books))
-// console.log(create('doc', books))
