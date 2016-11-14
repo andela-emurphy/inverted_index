@@ -6,18 +6,15 @@ const gulp = require('gulp'),
       angularFilesort = require('gulp-angular-filesort'),
       naturalSort = require('gulp-natural-sort')
 
-var files = ['./src/css/*.css', './src/js/*.js', './src/js/**/*.js', './src/*.js'] 
+var files = ['./src/css/*.css', './src/js/*.js', './src/js/**/*.js'] 
 
 gulp.task('lint', function() {
-
       gulp.src(files)
             .pipe(jshint('.jshintrc'))
             .pipe(jshint.reporter('jshint-stylish'), {
                   verbose: true
             })
 })
-
-
 gulp.task('inject', function() {
       var wiredepOptions = {
             'bowerJson': require('./bower.json'),
@@ -27,9 +24,9 @@ gulp.task('inject', function() {
       var injectOptions = {
             ignorePath: "/src"
       }
-
       gulp.src('./src/index.html')
-            .pipe(inject(gulp.src(files).pipe(naturalSort('desc')), injectOptions))
+            .pipe(inject(gulp.src(files)
+                        .pipe(naturalSort()), injectOptions))
             .pipe(wiredep(wiredepOptions))
             .pipe(gulp.dest('./src'))
 })
@@ -40,9 +37,9 @@ gulp.task('browser-sync',function() {
             }
       })
 })
-
 gulp.task('serve', ['inject', 'lint', 'browser-sync'], function() {
       var files = [['./src/css/*.css', './src/**/*.js', './src/*.js']]
+     // gulp.watch(files, ['inject' ])
       gulp.watch(files).on('change', browserSync.reload);
-      gulp.watch(files, ['inject', 'lint' ])
+
 });

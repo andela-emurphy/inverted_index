@@ -1,0 +1,9 @@
+.main-alert {
+    text-align: center;
+    background: red;
+    color: black
+}
+
+.alert-hidden {
+  visibility: hidden;
+}
