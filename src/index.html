@@ -1,58 +1,69 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Inverted Index</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-         <!-- bower:css -->
-         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
-         <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
-         <!-- endbower --> 
 
-        <!--inject:css-->
-        <link rel="stylesheet" href="/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/main.css">
-        <!--endinject-->
-    </head>
-    <body ng-app="invertedIndex">
-        <div class="main-container" ng-controller="mainController">
-            <div class="nav">
-                <div class="container">
-                    <h1 class="brand">Inverted Index Fast</h1>
-                </div>
-            </div>   
-            <div class="container">
-                <div class="row">
-                     <div class="col-md-4">
-                          <div  class="alert alert-{{ alert.type }} animated main-alert" 
-                                ng-class="{'flipInY': alert.show, 'flipOutY': !alert.show, 'alert-hidden': !alert.hasBeenHidden }">
-                                <p>{{ alert.message }}</p>
-                          </div>
-                         <p>Upload a json file to index</p>
-                        <input class="btn btn-default" type="file" name="files[]" id="file"  file-uploader multiple  />
-                    </div>
-                    <div class="col-md-8"></div>    
-                </div>
-            </div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Inverted Index</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+  <!-- endbower -->
+  <!--inject:css-->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <!--endinject-->
+</head>
+
+<body ng-app="invertedIndex">
+  <div class="main-container" ng-controller="mainController">
+    <div class="nav">
+      <div class="container">
+        <h1 class="brand">Inverted Index Fast</h1>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div ng-if="alert.show" class="alert alert-{{ alert.tye}}">
+            <p>{{ alert.message }}</p>
+          </div>
+          <p>Upload a json file to index</p>
+          <input class="btn btn-default" type="file" name="files[]" id="file" file-uploader multiple />
+          <div>
+             <button ng-click="getIndexedFile(1)">click me</button>
+             <!--<div ng-if="indexedFiles.length > 0">-->
+               <button ng-repeat="file in getIndexedFile(1) track by $index" value="$index">{{ $index + 1 }}</button>
+             <!--</div>-->
+          </div>
+
         </div>
-        <!-- bower:js -->
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/jquery/dist/jquery.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <!-- endbower -->
-        <script src="/inverted-index.js"></script>
-        <!--inject:js-->
+        <div class="col-md-8">
+          <span ng-if="!isIndexed">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                Basic panel example
+              </div>
+            </div>
+          </span>
+          <span ng-if="isIndexed">
+            <div ng-include="'views/indexed-file-table.html'"></div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- bower:js -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <!-- endbower -->
+  <script src="/inverted-index.js"></script>
+  <!--inject:js-->
+  <script src="/js/app.js"></script>
+  <script src="/js/services/alerts.js"></script>
+  <!--endinject-->
+</body>
 
-        <script src="/js/app.js"></script>
-
-        <script src="/js/directives/fileUploader.js"></script>
-
-        <script src="/js/script.js"></script>
-
-        <script src="/js/services/alerts.js"></script>
-
-        <!--endinject-->
-    </body>
 </html>
