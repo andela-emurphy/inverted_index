@@ -19,7 +19,7 @@ class InvertedIndex {
   tokenizer(text) {
     return text.toLowerCase()
                 .replace(/[^a-z0-9\s]/g, '')
-                .split(/\s+/g)
+                .split(/\s+/g);
   }
 
 
@@ -57,7 +57,7 @@ class InvertedIndex {
 
     this.indexedFiles[fileName] = terms;
     this.fileIndex++;
-    return   terms
+    return  terms
   }
 
 
@@ -73,17 +73,17 @@ class InvertedIndex {
 
   searchIndex(query, fileName) {
   
-    let fileToSearch = this.getIndex(fileName) || []
-    let found = {}
+    let fileToSearch = this.getIndex(fileName) || [];
+    let found = {};
     if(!query) {
-      return "no query to search"
+      return "no query to search";
     }
-    console.log(query)
     this.tokenizer(query).forEach(word => {
       if(fileToSearch.hasOwnProperty(word)){
         found[word] = fileToSearch[word];
-      }
+      };
     })
-    return found
-  }
+    return found;
+  };
 }
+
