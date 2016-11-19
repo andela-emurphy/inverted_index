@@ -12,7 +12,7 @@ var books = [{
 describe('inverted index', function() {
     beforeEach(function() {
         this.index = new InvertedIndex();
-        this.indexedBook = this.index.createIndex(books);
+        this.indexedBook = this.index.createIndex('books.json', books);
     });
 
     describe('index Constructor', function() {
@@ -50,17 +50,57 @@ describe('inverted index', function() {
     describe('String tokenizer', function() {
 
       it('should return an array', function () {
-        var strippedString = this.index.tokenizer('Alice in Wonderland')
+        let strippedString = this.index.tokenizer('Alice in Wonderland')
         expect(Array.isArray(strippedString)).toBe(true);
         expect(strippedString).toEqual(jasmine.arrayContaining(['alice', 'in', 'wonderland']))
       });
 
       it('should remove all non alphanumeric characters', function() {
-        var strippedString = this.index.tokenizer('he Lord of the Ring #==')
+        let strippedString = this.index.tokenizer('he Lord of the Ring #==')
         expect(strippedString).toEqual(jasmine.arrayContaining(['he', 'lord', 'of']))
         expect(strippedString).not.toEqual(jasmine.arrayContaining(['#==']))
       })
     });
 
-    describe('')
+    describe('get index', function() {
+
+      it('should return undefined if get index failed', function() {
+        let getIndex = this.index.getIndex('NOT A VALID PARAM'); 
+        expect(getIndex).toEqual(undefined);
+      });
+
+      it('should return an object when value is found', function() {
+        let getIndex = this.index.getIndex('books.json');
+        expect(typeof(getIndex) === 'object').toBe(true);
+      });
+
+       it('should contain valid indexed words and position', function() {
+        let getIndex = this.index.getIndex('books.json')
+        expect(getIndex.hasOwnProperty('alice')).toBe(true);
+        expect(Array.isArray(getIndex['alice'])).toBe(true);
+        expect(getIndex['of']).toEqual(jasmine.arrayContaining([1,2]))
+      });
+    })
+
+    describe('search index', function() {
+      it('should return no query when no value is passed in', function() {
+        let searchIndex = this.index.searchIndex();
+        expect(searchIndex).toEqual('no query to search');
+      });
+
+      it('should return an empty {object} if no query is found', function() {
+        let searchIndex = this.index.searchIndex( 'jesus',  'books.json')
+        expect(typeof(searchIndex) === 'object').toBe(true)
+        expect(searchIndex.length).toEqual(0);
+      });
+
+      it('should return an {object} with valid properties', function() {
+         let searchIndex = this.index.searchIndex( 'alice in wonderland',  'books.json')
+         console.log(searchIndex)
+          expect(typeof(searchIndex) === 'object').toBe(true)
+          expect(searchIndex.length > 0).toBe(true);
+          expect(searchIndex['alice']).toEqual(jasmine.arrayContaining([1]))
+      })
+
+    });
 });
