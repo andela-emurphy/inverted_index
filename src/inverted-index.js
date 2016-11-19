@@ -22,6 +22,7 @@ class InvertedIndex {
                 .split(/\s+/g)
   }
 
+
   /* creates an inverted index
   *
   * @function
@@ -71,7 +72,8 @@ class InvertedIndex {
   }
 
   searchIndex(query, fileName) {
-    let fileToSearch = this.getIndex(fileName)
+  
+    let fileToSearch = this.getIndex(fileName) || []
     let found = {}
     if(!query) {
       return "no query to search"

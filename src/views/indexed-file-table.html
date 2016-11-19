@@ -1,7 +1,8 @@
 <div class="input-group search">
-      <input type="text" class="form-control" ng-model="d" placeholder="Search for index">
+      <input type="text" class="form-control" ng-model="query" placeholder="Search for index">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
+        <button class="btn btn-default"  ng-click="searchIndex(query)">Go!</button>
+        {{ query }}
       </span>
 </div>
 

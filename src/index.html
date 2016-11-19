@@ -27,6 +27,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
+          <div class="alert alert-{{ alert.type }} animated" ng-show="alert.show" ng-class="{'flipInX': alert.show, 'flipOutY': !alert.show }">{{ alert.message }}></div>
+          {{ alert }}
           <div class="upload">
             <p>Upload a valid json file</p>
             <div class="file-upload">
