@@ -28,26 +28,25 @@ class InvertedIndex {
   * @param {Array} data to be indexed
   * @return {Array}
   */
-  createIndex(fileData) {
+  createIndex(fileName, fileData) {
     const terms = {};
-    let sn = 0;
+    let count = 0;
     try{
       if(typeof(fileData) !== 'object')
         return 'invalid json file';
         // throw Error('invalid json file');
 
       for (let book of fileData) {
-        sn++;
-        let document = sn;
+        count++;
         for (var key in book) {
           this.tokenizer(book[key]).forEach( word => {
             if (!terms.hasOwnProperty(word)) {
               terms[word] = [];
             }
-            if (terms[word].indexOf(document) > -1) {
+            if (terms[word].indexOf(count) > -1) {
               return;
             }
-            terms[word].push(document);
+            terms[word].push(count);
           });
         }
       }
@@ -55,9 +54,9 @@ class InvertedIndex {
       return 'invalid json object';
     }
 
-    this.indexedFiles['file_' +this.fileIndex] = terms;
+    this.indexedFiles[fileName] = terms;
     this.fileIndex++;
-    return   terms;
+    return   terms
   }
 
 
@@ -67,12 +66,12 @@ class InvertedIndex {
   * @param {String} text to be stripped
   * @return {Array}
   */
-  getIndex(file) {
-    return this.indexedFiles[file];
+  getIndex(fileName) {
+    return this.indexedFiles[fileName];
   }
 
-  searchIndex(query, file) {
-    let fileToSearch = this.indexedFiles[file]
+  searchIndex(query, fileName) {
+    let fileToSearch = this.getIndex(fileName)
     let found = {}
     if(!query) {
       return "no query to search"
@@ -83,8 +82,6 @@ class InvertedIndex {
         found[word] = fileToSearch[word];
       }
     })
-
     return found
-
   }
 }

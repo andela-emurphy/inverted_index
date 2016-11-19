@@ -10,8 +10,8 @@ angular.module('invertedIndex', [])
       }
   })
   .directive('fileUpload', ($log) => {
-    const template = ' <input type="file" id="file" name="files">\
-                <label for="file"><i class="fa fa-upload" aria-hidden="true"></i> Upload A file</label>'
+    const template = ' <input type="file" id="file" name="files" multiple>\
+                <label for="file"><i class="fa fa-upload" aria-hidden="true"></i> Upload A file <span>{{ uploadedFilesCount }}</span></label>'
 
     function link(scope, elem, attr) {
       elem.on('change', function (evt) {
@@ -27,6 +27,7 @@ angular.module('invertedIndex', [])
               let result = JSON.parse(event.target.result);
               scope.$apply(function () {
                 scope.uploadedFiles[file.name] = result
+                scope.uploadedFilesCount = scope.uploadedFiles.length
               })
             } catch (e) {
               alert('invalid json file ' + e);
@@ -46,34 +47,33 @@ angular.module('invertedIndex', [])
   .controller('mainController', ($scope, alert, $log, $timeout) =>  {
 
       $scope.uploadedFiles = {}
+      $scope.uploadedFilesCount = $scope.uploadedFiles.length;
       $scope.index
+      $scope.showTable =false
   
-
+      $scope.selected = function () {
+        return document.getElementById('uploaded-files').value
+      }
       $scope.createIndex = () => {
 
-        var selected = document.getElementById('uploaded-files').value
-
+        var selected = $scope.selected()
         if($scope.isValidFile(selected) && $scope.uploadedFiles.hasOwnProperty(selected)) {
           var indexer = new InvertedIndex()
-          $scope.index = indexer.createIndex($scope.uploadedFiles[selected])
-        
+          $log.log($scope.uploadedFiles[selected])
+          $scope.index = indexer.createIndex(selected, $scope.uploadedFiles[selected])
+          $scope.showTable = true
+         $log.log($scope.index)
         }
 
       }
 
     $scope.knowCount = function () {
-      let indexProp = $scope.index
-      let len = 0
-      for(let key in indexProp) {
-        let indexArr  = indexProp[f].length;     
-        len = Math.max(...indexArr)> len ? indexArr : len
-      }
-      $log.log(len)            
-      return len;
+      const selected = $scope.selected();
+      return $scope.uploadedFiles[selected].length
     }
 
     $scope.inValue = function(values, i) {
-        let a = $scope.knowCount();
+        // let a = $scope.knowCount();
         if(values.indexOf(i) > -1 ){
           return true;
         }      

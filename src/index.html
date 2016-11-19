@@ -47,12 +47,21 @@
           </div>
         </div>
         <div class="col-md-8">
-          <div class="index-table" ng-include="'views/indexed-file-table.html'"></div>
-          </span>
+          <div ng-if="showTable" class="index-table" ng-include="'views/indexed-file-table.html'"></div>
+          <div ng-if="!showTable" class="index-table" ng-include="'views/how-to-use.html'"></div>
         </div>
       </div>
     </div>
   </div>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div col-md-12>
+          <p>&copy; Copyright 2016 Inverted Index Inc</p>
+        </div>
+      </div>
+    </div>
+  </footer>
   <!-- bower:js -->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/jquery/dist/jquery.js"></script>

@@ -1,11 +1,12 @@
-.navbar-default, .btn-default{
+body {
+  background: #e8e8e8;
+}
+.navbar-default, .btn-default {
   
     background-color: #cd5c5c !important ;
     border-color: #cd5c5c;
  
 }
-
-
 .main-alert {
     text-align: center;
     background: red;
@@ -68,4 +69,9 @@ table thead {
 table > thead > tr > th {
   font-size: 20px;
   padding: 15px;
+}
+footer {
+  background: #cd5c5c;
+  padding: 10px;
+  color: #fff;
 }

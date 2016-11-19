@@ -9,13 +9,13 @@
   <thead class="thead-inverse">
   <tr>
     <th>words</th>
-    <th ng-repeat="i in [] | range:knowCount()"> doc_{{ i }}</th>
+    <th ng-repeat="number in [] | range:knowCount()"> doc_{{ number }}</th>
   </tr>
 </thead>
   <tr ng-repeat="(key, values) in index">
       <td > {{ key }}</td>
-      <td  ng-repeat="i in [] | range:knowCount()">
-        <span ng-if="inValue(values, i)"> <i class="fa fa-check" aria-hidden="true"></i></span>
+      <td  ng-repeat="number in [] | range:knowCount()">
+        <span ng-if="inValue(values, number)"> <i class="fa fa-check" aria-hidden="true"></i></span>
     </td>
   </tr>
 </table>
