@@ -34,11 +34,12 @@ gulp.task('browser-sync',function() {
       browserSync.init({
             server: {
                   baseDir: "./src"
-            }
+            },
+            port:5000 
       })
 })
 gulp.task('serve', ['inject', 'lint', 'browser-sync'], function() {
-      var files = [['./src/css/*.css', './src/**/*.js', './src/*.js']]
+      var files = ['./src/*.html','./src/css/*.css', './src/**/*.js', './src/*.js']
      // gulp.watch(files, ['inject' ])
       gulp.watch(files).on('change', browserSync.reload);
 });

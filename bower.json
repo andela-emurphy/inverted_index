@@ -18,7 +18,8 @@
   "dependencies": {
     "angular": "^1.5.8",
     "bootstrap": "^3.3.7",
-    "animate.css": "^3.5.2"
+    "animate.css": "^3.5.2",
+    "font-awesome": "^4.7.0"
   },
   "overrides": {
     "bootstrap": {

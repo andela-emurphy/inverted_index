@@ -1,44 +1,21 @@
-<table class="table">
+<div class="input-group search">
+      <input type="text" class="form-control" ng-model="d" placeholder="Search for index">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+</div>
+
+<table class="table table-bordered">
+  <thead class="thead-inverse">
   <tr>
-    <th>file Name</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
+    <th>words</th>
+    <th ng-repeat="i in [] | range:knowCount()"> doc_{{ i }}</th>
   </tr>
-  <tr>
-    <th>file Name</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-  </tr>
-  <tr>
-    <th>file Name</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-  </tr>
-  <tr>
-    <th>file Name</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-  </tr>
-  <tr>
-    <th>file Name</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-  </tr>
-  <tr>
-    <th>file Name</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
-    <th>doc_1</th>
+</thead>
+  <tr ng-repeat="(key, values) in index">
+      <td > {{ key }}</td>
+      <td  ng-repeat="i in [] | range:knowCount()">
+        <span ng-if="inValue(values, i)"> <i class="fa fa-check" aria-hidden="true"></i></span>
+    </td>
   </tr>
 </table>

@@ -3,14 +3,14 @@
 angular.module('invertedIndex')
   .service('alert', function($rootScope, $timeout) {
     return function(message, type, show, timeout) {
-      var alertTimeout;
+      // var alertTimeout;
       $rootScope.alert = {
         hasBeenHidden: true,
         message: message,
         type: type,
-        show: true
+        show: false
       }
-      var alertTimeout = $timeout(function() {
+    $timeout(function() {
         $rootScope.alert.show = false
       }, timeout || 5000)
     }

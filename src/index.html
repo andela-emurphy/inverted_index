@@ -9,6 +9,7 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
   <!-- endbower -->
   <!--inject:css-->
   <link rel="stylesheet" href="/css/bootstrap.css">
@@ -18,7 +19,7 @@
 
 <body ng-app="invertedIndex">
   <div class="main-container" ng-controller="mainController">
-    <div class="nav">
+    <div class="navbar navbar-default">
       <div class="container">
         <h1 class="brand">Inverted Index Fast</h1>
       </div>
@@ -26,29 +27,27 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <div ng-if="alert.show" class="alert alert-{{ alert.tye}}">
-            <p>{{ alert.message }}</p>
+          <div class="upload">
+            <p>Upload a valid json file</p>
+            <div class="file-upload">
+              <file-upload></file-upload>
+            </div>
           </div>
-          <p>Upload a json file to index</p>
-          <input class="btn btn-default" type="file" name="files[]" id="file" file-uploader multiple />
           <div>
-             <button ng-click="getIndexedFile(1)">click me</button>
-             <!--<div ng-if="indexedFiles.length > 0">-->
-               <button ng-repeat="file in getIndexedFile(1) track by $index" value="$index">{{ $index + 1 }}</button>
-             <!--</div>-->
+            <div class="input-group">
+              <select id="uploaded-files" class="form-control" placeholder="select books">
+                <option value="">Select a file to index</option>
+                <option  ng-repeat="(key, data) in uploadedFiles" value="{{ key }}" > {{ key }}</option>
+              </select>
+              <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="createIndex()" type="button">Create an Index</button>
+              </span>
+            </div>
+            
           </div>
-
         </div>
         <div class="col-md-8">
-          <span ng-if="!isIndexed">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                Basic panel example
-              </div>
-            </div>
-          </span>
-          <span ng-if="isIndexed">
-            <div ng-include="'views/indexed-file-table.html'"></div>
+          <div class="index-table" ng-include="'views/indexed-file-table.html'"></div>
           </span>
         </div>
       </div>
