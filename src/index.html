@@ -18,18 +18,17 @@
 </head>
 
 <body ng-app="invertedIndex">
-  <div class="main-container" ng-controller="mainController">
+  <div class="main-container" ng-controller="mainController" ng-cloak>
     <div class="navbar navbar-default">
       <div class="container">
         <h1 class="brand">Inverted Index Fast</h1>
       </div>
     </div>
-    <div class="container">
+    <div class="container" >
       <div class="row">
         <div class="col-md-4">
-          <div class="alert alert-{{ alert.type }} animated" ng-show="alert.show" ng-class="{'flipInX': alert.show, 'flipOutY': !alert.show }">{{ alert.message }}></div>
-          {{ alert }}
-          <div class="upload">
+          <div class="alert alert-{{ alert.type }} animated" ng-show="alert.show" ng-class="{'flipInX': alert.show, 'flipOutY': !alert.show }">{{ alert.message }}</div>
+           <div class="upload">
             <p>Upload a valid json file</p>
             <div class="file-upload">
               <file-upload></file-upload>
@@ -38,7 +37,7 @@
           <div>
             <div class="input-group">
               <select id="uploaded-files" class="form-control" placeholder="select books">
-                <option value="">Select a file to index</option>
+                <option multiple ng-show="uploadedFiles.length < 0">Select a file to index</option>
                 <option  ng-repeat="(key, data) in uploadedFiles" value="{{ key }}" > {{ key }}</option>
               </select>
               <span class="input-group-btn">
@@ -49,8 +48,8 @@
           </div>
         </div>
         <div class="col-md-8">
-          <div ng-if="showTable" class="index-table" ng-include="'views/indexed-file-table.html'"></div>
-          <div ng-if="!showTable" class="index-table" ng-include="'views/how-to-use.html'"></div>
+          <div ng-if="showTable" class="index-table animated fadeInRightBig" ng-include="'views/indexed-file-table.html'"></div>
+          <div ng-if="!showTable"   class="index-table animated fadeInUpBig" ng-include="'views/how-to-use.html'"></div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 angular.module('invertedIndex', [])
   .filter('range', () => {
@@ -7,55 +7,55 @@ angular.module('invertedIndex', [])
         input.push(i);
       }
       return input;
-    }
+    };
   })
-  .directive('fileUpload', ($log, alerts) => {
+  .directive('fileUpload', (alerts) => {
     /*
     * template to be rendered
     */
-    const template = ' <input type="file" id="file" name="files" multiple>\
-                <label for="file"><i class="fa fa-upload" aria-hidden="true"></i> Upload A file <span>{{ uploadedFilesCount }}</span></label>'
+    const template = `<input type="file" id="file" name="files" multiple>
+                      <label for="file"><i class="fa fa-upload" aria-hidden="true"></i> 
+                      Upload A file <span>{{ uploadedFilesCount }}</span></label>`;
     
 
     /*
     * l ink funtion to be called
     */
-    function link(scope, elem, attr) {
+    function link(scope, elem) {
       elem.on('change', (evt) => {
-        const fileList = evt.target.files
+        const fileList = evt.target.files;
         angular.forEach(fileList, (file) => {
           if (!scope.isValidFile(file.name)) {
             scope.$apply(function () {
-              alerts("please all file must be a valid json", "danger", true, 5000)
-            })
-            return
+              alerts("please all file must be a valid json", "danger", true, 5000);
+            });
+            return;
           }
           const reader = new FileReader();
           //event fired when reader.readAsTex is callec
           reader.onload = function (event) {
             try {
-              let result = JSON.parse(event.target.result);
-              scope.$apply(function () {
-                scope.uploadedFiles[file.name] = result
-                scope.uploadedFilesCount = scope.uploadedFiles.length
-              })
+              const result = JSON.parse(event.target.result);
+              scope.$apply(() => {
+                scope.uploadedFiles[file.name] = result;
+              });
             } catch (e) {
-              scope.$apply(function () {
-                alerts("invalid json. pls refer to index guide ", "danger", true, 5000)
-              })
+              scope.$apply(() => {
+                alerts("invalid json. pls refer to index guide ", "danger", true, 5000);
+              });
               return;
             }
-          }
+          };
           reader.readAsText(file);
-        })
-      })
+        });
+      });
     }
     return {
       template: template,
       link: link
-    }
+    };
   })
-  .controller('mainController', ($scope, alerts, $log, $timeout) => {
+  .controller('mainController', ($scope, alerts) => {
     const indexer = new InvertedIndex();
     /*
     *  {Array} uploaded files
@@ -65,10 +65,10 @@ angular.module('invertedIndex', [])
     /*
     *  indexed value to display
     */
-    $scope.index;
+    $scope.index = [];
 
     /*
-    *  {Boolean} toogkes index table
+    *  {Boolean} shwows index table
     */
     $scope.showTable = false;
 
@@ -78,17 +78,18 @@ angular.module('invertedIndex', [])
     * @return {String} selected value
     */
     $scope.selected = function () {
-      return document.getElementById('uploaded-files').value
-    }
+      return document.getElementById('uploaded-files').value;
+    };
+
+
+
     $scope.createIndex = () => {
-      var selected = $scope.selected()
+      let selected = $scope.selected();
       if ($scope.isValidFile(selected) && $scope.uploadedFiles.hasOwnProperty(selected)) {
-        $log.log($scope.uploadedFiles[selected]);
         $scope.index = indexer.createIndex(selected, $scope.uploadedFiles[selected]);
         $scope.showTable = true;
-        $log.log($scope.index);
       }
-    }
+    };
 
     /*seaches for a query 
     *
@@ -98,12 +99,13 @@ angular.module('invertedIndex', [])
     $scope.searchIndex = function (query) {
       let result;
       if (!query) {
-        alerts("please enter a query", "success", true, 5000);
+        alerts("please enter a query", "danger", true, 5000);
+        $scope.index = indexer.getIndex($scope.selected());
         return false;
       }
       result = indexer.searchIndex(query, $scope.selected());
       $scope.index = result;
-    }
+    };
 
 
     /*gets the length of the highest searched result
@@ -113,7 +115,9 @@ angular.module('invertedIndex', [])
     $scope.knowCount = function () {
       const selected = $scope.selected();
       return $scope.uploadedFiles[selected].length;
-    }
+    };
+
+    
 
     /*checks if the key in in the vakue
     *
@@ -122,10 +126,10 @@ angular.module('invertedIndex', [])
     */
     $scope.inValue = function (values, key) {
       // let a = $scope.knowCount();
-      if (values.indexOf(i) > -1) {
+      if (values.indexOf(key) > -1) {
         return true;
       }
-    }
+    };
 
     /*set the value to be selected
     *
@@ -134,5 +138,5 @@ angular.module('invertedIndex', [])
     */
     $scope.isValidFile = function (file) {
       return file.match(/\.json$/);
-    }
+    };
   });

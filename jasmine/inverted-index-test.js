@@ -1,4 +1,4 @@
-
+"use strict";
 
 var books = [{
   "title": "Alice in Wonderland",
@@ -25,7 +25,6 @@ describe('inverted index', function() {
       it('should have a defualt instatiated  values',function() {
         expect(this.index.indexedFiles).not.toBe(null);
         expect(Array.isArray(this.index.indexedFiles)).toBe(true);
-        expect(typeof(this.index.fileIndex)).toEqual('number');
       });
 
     });
@@ -41,25 +40,25 @@ describe('inverted index', function() {
       });
 
       it('should create a valid index', function() {
-          expect(this.indexedBook['a']).not.toBe(null);
-          expect(this.indexedBook['alice']).toEqual(jasmine.arrayContaining([1]));
-          expect(this.indexedBook['and']).toEqual(jasmine.arrayContaining([1, 2]));
+          expect(this.indexedBook.a).not.toBe(null);
+          expect(this.indexedBook.alice).toEqual(jasmine.arrayContaining([1]));
+          expect(this.indexedBook.and).toEqual(jasmine.arrayContaining([1, 2]));
       });
     });
 
     describe('String tokenizer', function() {
 
       it('should return an array', function () {
-        let strippedString = this.index.tokenizer('Alice in Wonderland')
+        let strippedString = this.index.tokenizer('Alice in Wonderland');
         expect(Array.isArray(strippedString)).toBe(true);
-        expect(strippedString).toEqual(jasmine.arrayContaining(['alice', 'in', 'wonderland']))
+        expect(strippedString).toEqual(jasmine.arrayContaining(['alice', 'in', 'wonderland']));
       });
 
       it('should remove all non alphanumeric characters', function() {
-        let strippedString = this.index.tokenizer('he Lord of the Ring #==')
-        expect(strippedString).toEqual(jasmine.arrayContaining(['he', 'lord', 'of']))
-        expect(strippedString).not.toEqual(jasmine.arrayContaining(['#==']))
-      })
+        let strippedString = this.index.tokenizer('he Lord of the Ring #==');
+        expect(strippedString).toEqual(jasmine.arrayContaining(['he', 'lord', 'of']));
+        expect(strippedString).not.toEqual(jasmine.arrayContaining(['#==']));
+      });
     });
 
     describe('get index', function() {
@@ -75,12 +74,12 @@ describe('inverted index', function() {
       });
 
        it('should contain valid indexed words and position', function() {
-        let getIndex = this.index.getIndex('books.json')
+        let getIndex = this.index.getIndex('books.json');
         expect(getIndex.hasOwnProperty('alice')).toBe(true);
-        expect(Array.isArray(getIndex['alice'])).toBe(true);
-        expect(getIndex['of']).toEqual(jasmine.arrayContaining([1,2]))
+        expect(Array.isArray(getIndex.alice)).toBe(true);
+        expect(getIndex.of).toEqual(jasmine.arrayContaining([1,2]))
       });
-    })
+    });
 
     describe('search index', function() {
       it('should return no query when no value is passed in', function() {
@@ -89,18 +88,14 @@ describe('inverted index', function() {
       });
 
       it('should return an empty {object} if no query is found', function() {
-        let searchIndex = this.index.searchIndex( 'jesus',  'books.json')
-        expect(typeof(searchIndex) === 'object').toBe(true)
-        expect(searchIndex.length).toEqual(0);
+        let searchIndex = this.index.searchIndex('jesus', 'books.json');
+        expect(typeof(searchIndex)).toEqual('object');
       });
 
       it('should return an {object} with valid properties', function() {
          let searchIndex = this.index.searchIndex( 'alice in wonderland',  'books.json')
-         console.log(searchIndex)
-          expect(typeof(searchIndex) === 'object').toBe(true)
-          expect(searchIndex.length > 0).toBe(true);
-          expect(searchIndex['alice']).toEqual(jasmine.arrayContaining([1]))
-      })
-
+          expect(typeof(searchIndex) === 'object').toBe(true);
+          expect(searchIndex.alice).toEqual(jasmine.arrayContaining([1]));
+      });
     });
 });
