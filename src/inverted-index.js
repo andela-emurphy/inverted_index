@@ -33,26 +33,22 @@ class InvertedIndex {
   createIndex(fileName, fileData) {
     const terms = {};
     let count = 0;
-    try {
-      if (typeof (fileData) !== 'object') {
-        throw new Error('invalid json file')
-      }   
-      for (let book of fileData) {
-        count++;
-        for (let key in book) {
-          this.tokenizer(book[key]).forEach(word => {
-            if (!terms.hasOwnProperty(word)) {
-              terms[word] = [];
-            }
-            if (terms[word].indexOf(count) > -1) {
-              return;
-            }
-            terms[word].push(count);
-          });
-        }
+    if (typeof (fileData) !== 'object') {
+      return 'invalid json file';
+    }
+    for (let book of fileData) {
+      count++;
+      for (let key in book) {
+        this.tokenizer(book[key]).forEach( word => {
+          if (!terms.hasOwnProperty(word)) {
+            terms[word] = [];
+          }
+          if (terms[word].indexOf(count) > -1) {
+            return;
+          }
+          terms[word].push(count);
+        });
       }
-    } catch (e) {
-      return 'invalid json object';
     }
 
     this.indexedFiles[fileName] = terms;

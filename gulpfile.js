@@ -1,3 +1,4 @@
+"use strict";
 const gulp = require('gulp'),
       inject = require('gulp-inject'),
       browserSync = require('browser-sync').create(),
@@ -12,7 +13,7 @@ gulp.task('lint', function() {
             .pipe(jshint.reporter('jshint-stylish'), {
                   verbose: true
             });
-})
+});
 gulp.task('inject', function() {
       const wiredepOptions = {
             'bowerJson': require('./bower.json'),
@@ -27,19 +28,19 @@ gulp.task('inject', function() {
                         .pipe(naturalSort()), injectOptions))
             .pipe(wiredep(wiredepOptions))
             .pipe(gulp.dest('./src'));
-})
+});
 gulp.task('browser-sync',function() {
       browserSync.init({
             server: {
                   baseDir: "./src"
             },
             port: process.env.PORT || 5000 
-      })
-})
+      });
+});
 gulp.task('serve', ['inject', 'lint', 'browser-sync'], function() {
-      var files = ['./src/*.html','./src/css/*.css', './src/**/*.js', './src/*.js']
+      var files = ['./src/*.html','./src/css/*.css', './src/**/*.js', './src/*.js'];
      // gulp.watch(files, ['inject' ])
       gulp.watch(files).on('change', browserSync.reload);
 });
 
-gulp.task('default', ['browser-sync'])
+gulp.task('default', ['browser-sync']);
