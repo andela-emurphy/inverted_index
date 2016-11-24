@@ -24,7 +24,7 @@
         <th ng-repeat="number in [] | range:data.count"> doc_{{ number }}</th>
       </tr>
     </thead>
-    <tr ng-repeat="(key, values) in data.data">
+    <tr ng-repeat="(key, values) in data.data track by $index">
       <td> {{ key }}</td>
       <td ng-repeat="number in [] | range:data.count">
         <span ng-if="values.includes(number)"> <i class="fa fa-check" aria-hidden="true"></i></span>

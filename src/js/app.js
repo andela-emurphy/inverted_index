@@ -9,25 +9,18 @@ angular.module('invertedIndex', [])
       return input;
     };
   })
-  .directive('fileUpload', (alerts) => {
+  .directive('fileUpload', ['alerts', (alerts) => {
     /*
-    * template to be rendered
-    */
-    const template = `<input type="file" id="file" name="files" multiple>
-                      <label for="file"><i class="fa fa-upload" aria-hidden="true"></i> 
-                      Upload A file <span>{{ uploadedFilesCount }}</span></label>`;
-    
-
-    /*
-    * link funtion to be called
-    */
+     * link funtion to be called
+     */
     function link(scope, elem) {
       elem.on('change', (evt) => {
         const fileList = evt.target.files;
         angular.forEach(fileList, (file) => {
           if (!scope.isValidFile(file.name)) {
             scope.$apply(function () {
-              alerts("please all file must be a valid json", "danger", true, 5000);
+              alerts("please all file must be a valid json",
+                "danger", true, 5000);
             });
             return;
           }
@@ -41,8 +34,9 @@ angular.module('invertedIndex', [])
               });
             } catch (e) {
               scope.$apply(() => {
-                alerts("invalid json. pls refer to index guide ", "danger", true, 5000);
-               });
+                alerts("invalid json. pls refer to index guide ",
+                  "danger", true, 5000);
+              });
               return;
             }
           };
@@ -51,60 +45,64 @@ angular.module('invertedIndex', [])
       });
     }
     return {
-      template: template,
+      templateUrl: '../views/upload-file.html',
       link: link
     };
-  })
-  .controller('mainController', ($scope, alerts) => {
+  }])
+  .controller('mainController', ['$scope', 'alerts', ($scope, alerts) => {
+    /**
+     *  {Object} instanciates the invertedIndex class
+     */
     const indexer = new InvertedIndex();
-    /*
-    *  {Object}  uploaded files
-    */
+
+
     $scope.uploadedFiles = {};
 
-    /*
-    *  {Object} indexed value to display
-    */
     $scope.index = [];
 
-    /*
-    *  {Boolean} shwows indexed table
-    */
     $scope.showTable = false;
 
-    /*
-    *  {Array} Holds number of data in a file
-    */
     $scope.fileCount = [];
 
-    /*
-    *  {Array} Holds all indexed files
-    */
     $scope.allIndexedFiles = [];
 
 
-    /*set the value to be selected
-    *
-    * @return {String} selected value
-    */
+    /** set the value to be selected
+     * @param {String} dom element to get
+     * @return {String} selected value
+     */
     $scope.selected = (id) => {
       return document.getElementById(id || 'indexed-files').value;
     };
 
+
+    /**
+     * @param  {String} fileName - file name
+     * @param  {Object} data  - data to transform
+     * @param  {count} count - count of object in the file
+     */
     $scope.transformData = (fileName, data, count) => {
-     return {
-          fileName : fileName,
-          data: data,
-          count: count
-        };
+      return {
+        fileName: fileName,
+        data: data,
+        count: count
+      };
     };
 
+    /**
+     * creates an inverted Index 
+     */
     $scope.createIndex = () => {
       const selected = $scope.selected('uploaded-files');
       const uploadedFiles = $scope.uploadedFiles;
       console.log(selected);
-      if ($scope.isValidFile(selected) && uploadedFiles.hasOwnProperty(selected)) {
+      if ($scope.isValidFile(selected) &&
+        uploadedFiles.hasOwnProperty(selected)) {
         const data = indexer.createIndex(selected, uploadedFiles[selected]);
+        if (data === 'error' || $scope.length(data) < 1) {
+          alerts('invalid json file', 'danger');
+          return false;
+        }
         const fileCount = uploadedFiles[selected].length;
         $scope.index[0] = $scope.transformData(selected, data, fileCount);
         $scope.fileCount[selected] = fileCount;
@@ -113,38 +111,39 @@ angular.module('invertedIndex', [])
       }
     };
 
-    /*searches for a query 
-    *
-    * @param {String} query = value to be searched
-    * @return {void}  set the index value
-    */
+    /** searches for a query
+     *
+     * @param {String} query = value to be searched
+     * @return {void}  set the index value
+     */
     $scope.searchIndex = (query) => {
       let result;
       const selected = document.getElementById('indexed-files').value;
       let fileCount = null;
-      $scope.index =[];
+      $scope.index = [];
       // checks if a query was passed in
-      if (!query || !selected) {
-        alerts("please enter a query and what to search", "danger ", true, 5000);
-        fileCount = $scope.fileCount[selected];
-        result = indexer.searchIndex(query, selected);
-        $scope.index[0] = $scope.transformData(selected, result, fileCount);
+      if (!query || selected === "--select a file--") {
+        alerts("please enter a query and select file  to search",
+          "danger ", true, 5000);
         return false;
       }
       // displays serach result for all indexed files
-      if(selected === 'all') {
+      if (selected === 'all') {
         let count = 0;
-        for(let file in indexer.indexedFiles) {
-          var searchData = indexer.searchIndex(query, file); 
+        for (let file in indexer.indexedFiles) {
+          let searchData = indexer.searchIndex(query, file);
           fileCount = $scope.fileCount[file];
-          if(Object.keys(searchData) < 1){
+          if ($scope.length(searchData) < 1) {
             continue;
           }
-          $scope.index[count] = $scope.transformData(file, searchData,fileCount);
+          $scope.index[count] = $scope
+            .transformData(file, searchData, fileCount);
           count++;
         }
-      // displays search for single file
-      }else{
+        if ($scope.index.length < 1) {
+          alert('word does not exist in any file', 'danger');
+        }
+      } else {
         fileCount = $scope.fileCount[selected];
         result = indexer.searchIndex(query, selected);
         $scope.index[0] = $scope.transformData(selected, result, fileCount);
@@ -152,13 +151,22 @@ angular.module('invertedIndex', [])
     };
 
 
-
-    /* checks the value to be selected
-    *
-    * @param {String}  value to check
-    * @return {Boolen}  true or flase
-    */
+    /** checks the value to be selected
+     *
+     * @param {String}  value to check
+     * @return {Boolen}  true or flase
+     */
     $scope.isValidFile = function (file) {
       return file.match(/\.json$/);
     };
-  });
+
+    /** gets the let oh an object
+     *
+     * @param {Object}  value to check
+     * @return {Int}  true or flase
+     */
+    $scope.length = (object) => {
+      return Object.keys(object).length;
+    };
+  }]);
+  

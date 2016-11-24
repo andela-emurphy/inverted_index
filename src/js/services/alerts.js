@@ -3,7 +3,7 @@
 angular.module('invertedIndex')
   .service('alerts', function ($rootScope, $timeout) {
 
-    /* configures the alert property
+    /**  configures the alert property
      *
      * @param {Strimg} message to alert
      * @param {tye} type of message

@@ -1,0 +1,19 @@
+engines:
+  rubocop:
+    enabled: true
+  brakeman:
+   	enabled: true
+  jshint:
+    enabled: true
+  duplication:
+  	enabled: true
+    config:
+    	languages:
+      - javascript
+ratings:
+  paths:
+  - src/js/**
+  - src/bower_components
+exclude_paths:
+- spec/**/*
+- jasmien

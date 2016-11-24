@@ -46,16 +46,16 @@ describe('inverted index', function () {
     });
   });
 
-  describe('String tokenizer', function () {
+  describe('String stripper', function () {
 
     it('should return an array', function () {
-      let strippedString = this.index.tokenizer('Alice in Wonderland');
+      let strippedString = this.index.strip('Alice in Wonderland');
       expect(Array.isArray(strippedString)).toBe(true);
       expect(strippedString).toEqual(jasmine.arrayContaining(['alice', 'in', 'wonderland']));
     });
 
     it('should remove all non alphanumeric characters', function () {
-      let strippedString = this.index.tokenizer('he Lord of the Ring #==');
+      let strippedString = this.index.strip('he Lord of the Ring #==');
       expect(strippedString).toEqual(jasmine.arrayContaining(['he', 'lord', 'of']));
       expect(strippedString).not.toEqual(jasmine.arrayContaining(['#==']));
     });
@@ -63,9 +63,9 @@ describe('inverted index', function () {
 
   describe('get index', function () {
 
-    it('should return undefined if get index failed', function () {
+    it('should return not found if get index failed', function () {
       let getIndex = this.index.getIndex('NOT A VALID PARAM');
-      expect(getIndex).toEqual(undefined);
+      expect(getIndex).toEqual('file not found');
     });
 
     it('should return an object when value is found', function () {
