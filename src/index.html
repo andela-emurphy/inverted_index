@@ -24,11 +24,11 @@
         <h1 class="brand">Inverted Index Fast</h1>
       </div>
     </div>
-    <div class="container" >
+    <div class="container">
       <div class="row">
         <div class="col-md-4">
           <div class="alert alert-{{ alert.type }} animated" ng-show="alert.show" ng-class="{'flipInX': alert.show, 'flipOutY': !alert.show }">{{ alert.message }}</div>
-           <div class="upload">
+          <div class="upload">
             <p>Upload a valid json file</p>
             <div class="file-upload">
               <file-upload></file-upload>
@@ -44,12 +44,11 @@
                 <button class="btn btn-default" ng-click="createIndex()" type="button">Create an Index</button>
               </span>
             </div>
-            
           </div>
         </div>
         <div class="col-md-8">
           <div ng-if="showTable" class="index-table animated fadeInRightBig" ng-include="'views/indexed-file-table.html'"></div>
-          <div ng-if="!showTable"   class="index-table animated fadeInUpBig" ng-include="'views/how-to-use.html'"></div>
+          <div ng-if="!showTable" class="index-table animated fadeInUpBig" ng-include="'views/how-to-use.html'"></div>
         </div>
       </div>
     </div>

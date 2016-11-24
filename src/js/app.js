@@ -19,7 +19,7 @@ angular.module('invertedIndex', [])
     
 
     /*
-    * l ink funtion to be called
+    * link funtion to be called
     */
     function link(scope, elem) {
       elem.on('change', (evt) => {
@@ -32,7 +32,7 @@ angular.module('invertedIndex', [])
             return;
           }
           const reader = new FileReader();
-          //event fired when reader.readAsTex is callec
+          //event fired when reader.readAsTex is called
           reader.onload = function (event) {
             try {
               const result = JSON.parse(event.target.result);
@@ -42,7 +42,7 @@ angular.module('invertedIndex', [])
             } catch (e) {
               scope.$apply(() => {
                 alerts("invalid json. pls refer to index guide ", "danger", true, 5000);
-              });
+               });
               return;
             }
           };
@@ -58,83 +58,105 @@ angular.module('invertedIndex', [])
   .controller('mainController', ($scope, alerts) => {
     const indexer = new InvertedIndex();
     /*
-    *  {Array} uploaded files
+    *  {Object}  uploaded files
     */
     $scope.uploadedFiles = {};
 
     /*
-    *  indexed value to display
+    *  {Object} indexed value to display
     */
     $scope.index = [];
 
     /*
-    *  {Boolean} shwows index table
+    *  {Boolean} shwows indexed table
     */
     $scope.showTable = false;
+
+    /*
+    *  {Array} Holds number of data in a file
+    */
+    $scope.fileCount = [];
+
+    /*
+    *  {Array} Holds all indexed files
+    */
+    $scope.allIndexedFiles = [];
 
 
     /*set the value to be selected
     *
     * @return {String} selected value
     */
-    $scope.selected = function () {
-      return document.getElementById('uploaded-files').value;
+    $scope.selected = (id) => {
+      return document.getElementById(id || 'indexed-files').value;
     };
 
-
+    $scope.transformData = (fileName, data, count) => {
+     return {
+          fileName : fileName,
+          data: data,
+          count: count
+        };
+    };
 
     $scope.createIndex = () => {
-      let selected = $scope.selected();
-      if ($scope.isValidFile(selected) && $scope.uploadedFiles.hasOwnProperty(selected)) {
-        $scope.index = indexer.createIndex(selected, $scope.uploadedFiles[selected]);
+      const selected = $scope.selected('uploaded-files');
+      const uploadedFiles = $scope.uploadedFiles;
+      console.log(selected);
+      if ($scope.isValidFile(selected) && uploadedFiles.hasOwnProperty(selected)) {
+        const data = indexer.createIndex(selected, uploadedFiles[selected]);
+        const fileCount = uploadedFiles[selected].length;
+        $scope.index[0] = $scope.transformData(selected, data, fileCount);
+        $scope.fileCount[selected] = fileCount;
+        $scope.allIndexedFiles.push(selected);
         $scope.showTable = true;
       }
     };
 
-    /*seaches for a query 
+    /*searches for a query 
     *
-    * @param {String}  query value
+    * @param {String} query = value to be searched
     * @return {void}  set the index value
     */
-    $scope.searchIndex = function (query) {
+    $scope.searchIndex = (query) => {
       let result;
-      if (!query) {
-        alerts("please enter a query", "danger", true, 5000);
-        $scope.index = indexer.getIndex($scope.selected());
+      const selected = document.getElementById('indexed-files').value;
+      let fileCount = null;
+      $scope.index =[];
+      // checks if a query was passed in
+      if (!query || !selected) {
+        alerts("please enter a query and what to search", "danger ", true, 5000);
+        fileCount = $scope.fileCount[selected];
+        result = indexer.searchIndex(query, selected);
+        $scope.index[0] = $scope.transformData(selected, result, fileCount);
         return false;
       }
-      result = indexer.searchIndex(query, $scope.selected());
-      $scope.index = result;
-    };
-
-
-    /*gets the length of the highest searched result
-    *
-    * @return {Integer} selected value
-    */
-    $scope.knowCount = function () {
-      const selected = $scope.selected();
-      return $scope.uploadedFiles[selected].length;
-    };
-
-    
-
-    /*checks if the key in in the vakue
-    *
-    * @param {Array}  list of integers
-    * @return {Boolen}  true or false
-    */
-    $scope.inValue = function (values, key) {
-      // let a = $scope.knowCount();
-      if (values.indexOf(key) > -1) {
-        return true;
+      // displays serach result for all indexed files
+      if(selected === 'all') {
+        let count = 0;
+        for(let file in indexer.indexedFiles) {
+          var searchData = indexer.searchIndex(query, file); 
+          fileCount = $scope.fileCount[file];
+          if(Object.keys(searchData) < 1){
+            continue;
+          }
+          $scope.index[count] = $scope.transformData(file, searchData,fileCount);
+          count++;
+        }
+      // displays search for single file
+      }else{
+        fileCount = $scope.fileCount[selected];
+        result = indexer.searchIndex(query, selected);
+        $scope.index[0] = $scope.transformData(selected, result, fileCount);
       }
     };
 
-    /*set the value to be selected
+
+
+    /* checks the value to be selected
     *
     * @param {String}  value to check
-    * @return {Boolen  true or flase
+    * @return {Boolen}  true or flase
     */
     $scope.isValidFile = function (file) {
       return file.match(/\.json$/);
