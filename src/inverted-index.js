@@ -27,8 +27,8 @@ class InvertedIndex {
   /* creates an inverted index
    *
    * @function
-   * @param {Array} data to be indexed
-   * @return {Array}
+   * @param {String} file name 
+   * @return {Object} data to be indexed 
    */
   createIndex(fileName, fileData) {
     const terms = {};
@@ -56,16 +56,23 @@ class InvertedIndex {
   }
 
 
-  /* searches through the indexed files
+  /* get an indexed file
    *
-   * @function
-   * @param {String} text to be stripped
-   * @return {Array}
+   * @param {String} file name
+   * @return {Object} file - the index file
    */
   getIndex(fileName) {
     return this.indexedFiles[fileName];
   }
 
+
+  /* search inverted index
+   *
+   * @function
+   * @param {String} value for query
+   * @param {String} file to be queried
+   * @return {Object} 
+   */
   searchIndex(query, fileName) {
     let fileToSearch = this.getIndex(fileName) || [];
     let found = {};
@@ -78,49 +85,5 @@ class InvertedIndex {
       }
     });
     return found;
-  }
-
-  
+  }  
 }
-var book1 = [{
-    "title": "the ninja tutles",
-    "text": "Alice falls into a rabbit hole and enters a world full of imagination."
-  },
-
-  {
-    "title": "The god is goodip of the Ring.",
-    "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
-  }, {
-    "title": "jesus is lord",
-    "text": "animal instiß"
-  }
-];
-
-var book2 = [{
-    "title": "TunezMedia",
-    "text": "2016 is looking like a good year alice for many in showbiz. Moments after Omoni Oboli showed the world clips of P-Square new home her colleague in the movie industry, Daniella Okeke also shared snaps of her ongoing building project, with hopes of finishing it up before the year finally runs out."
-  },
-
-  {
-    "title": "opeyemiieblog",
-    "text": "wow.... congrats... more n more good things in ur life oo"
-  },
-
-  {
-    "title": "Philistine",
-    "text": "Alice falls into a rabbit hole anfuncd enters a world full of imagination."
-  },
-
-  {
-    "title": "LesbianBoy",
-    "text": "I usually see people call her a sh!t eater. Guess eating sh!t paid afterall grin"
-  }
-];
-
-
-
-// let index = new InvertedIndex();
-// index.createIndex('book1', book1);
-// index.createIndex('book2', book2);
-// console.log(index.indexedFiles);
-// console.log(index.indexAllSearchedFiles('alice'));
