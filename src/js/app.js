@@ -1,60 +1,9 @@
-"use strict";
-
 angular.module('invertedIndex', [])
-  .filter('range', () => {
-    return function (input, number) {
-      for (let i = 1; parseInt(number) >= i; i++) {
-        input.push(i);
-      }
-      return input;
-    };
-  })
-  .directive('fileUpload', ['alerts', (alerts) => {
-    /*
-     * link funtion to be called
-     */
-    function link(scope, elem) {
-      elem.on('change', (evt) => {
-        const fileList = evt.target.files;
-        angular.forEach(fileList, (file) => {
-          if (!scope.isValidFile(file.name)) {
-            scope.$apply(function () {
-              alerts("please all file must be a valid json",
-                "danger", true, 5000);
-            });
-            return;
-          }
-          const reader = new FileReader();
-          //event fired when reader.readAsTex is called
-          reader.onload = function (event) {
-            try {
-              const result = JSON.parse(event.target.result);
-              scope.$apply(() => {
-                scope.uploadedFiles[file.name] = result;
-              });
-            } catch (e) {
-              scope.$apply(() => {
-                alerts("invalid json. pls refer to index guide ",
-                  "danger", true, 5000);
-              });
-              return;
-            }
-          };
-          reader.readAsText(file);
-        });
-      });
-    }
-    return {
-      templateUrl: '../views/upload-file.html',
-      link: link
-    };
-  }])
-  .controller('mainController', ['$scope', 'alerts', ($scope, alerts) => {
+  .controller('mainController', ['$scope', '$timeout', ($scope,  $timeout) => {
     /**
      *  {Object} instanciates the invertedIndex class
      */
     const indexer = new InvertedIndex();
-
 
     $scope.uploadedFiles = {};
 
@@ -66,17 +15,8 @@ angular.module('invertedIndex', [])
 
     $scope.allIndexedFiles = [];
 
-
-    /** set the value to be selected
-     * @param {String} dom element to get
-     * @return {String} selected value
-     */
-    $scope.selected = (id) => {
-      return document.getElementById(id || 'indexed-files').value;
-    };
-
-
-    /**
+    /** converts data to be feed to the view
+     * 
      * @param  {String} fileName - file name
      * @param  {Object} data  - data to transform
      * @param  {count} count - count of object in the file
@@ -93,20 +33,21 @@ angular.module('invertedIndex', [])
      * creates an inverted Index 
      */
     $scope.createIndex = () => {
-      const selected = $scope.selected('uploaded-files');
+      const selected = document.getElementById('uploaded-files').value;
       const uploadedFiles = $scope.uploadedFiles;
-      console.log(selected);
       if ($scope.isValidFile(selected) &&
         uploadedFiles.hasOwnProperty(selected)) {
         const data = indexer.createIndex(selected, uploadedFiles[selected]);
-        if (data === 'error' || $scope.length(data) < 1) {
-          alerts('invalid json file', 'danger');
+        if (data.hasOwnProperty('error') || $scope.length(data) < 1) {
+          $scope.alerts('invalid json file or format', 'danger');
           return false;
         }
         const fileCount = uploadedFiles[selected].length;
         $scope.index[0] = $scope.transformData(selected, data, fileCount);
         $scope.fileCount[selected] = fileCount;
-        $scope.allIndexedFiles.push(selected);
+        if($scope.allIndexedFiles.indexOf(selected) === -1 ){
+          $scope.allIndexedFiles.push(selected);
+        }
         $scope.showTable = true;
       }
     };
@@ -123,7 +64,7 @@ angular.module('invertedIndex', [])
       $scope.index = [];
       // checks if a query was passed in
       if (!query || selected === "--select a file--") {
-        alerts("please enter a query and select file  to search",
+        $scope.alerts("please enter a query and select file  to search",
           "danger ", true, 5000);
         return false;
       }
@@ -131,7 +72,7 @@ angular.module('invertedIndex', [])
       if (selected === 'all') {
         let count = 0;
         for (let file in indexer.indexedFiles) {
-          let searchData = indexer.searchIndex(query, file);
+          const searchData = indexer.searchIndex(query, file);
           fileCount = $scope.fileCount[file];
           if ($scope.length(searchData) < 1) {
             continue;
@@ -141,32 +82,55 @@ angular.module('invertedIndex', [])
           count++;
         }
         if ($scope.index.length < 1) {
-          alert('word does not exist in any file', 'danger');
+          $scope.alerts('word does not exist in any file', 'danger');
         }
       } else {
         fileCount = $scope.fileCount[selected];
         result = indexer.searchIndex(query, selected);
-        $scope.index[0] = $scope.transformData(selected, result, fileCount);
+        if($scope.length(result) > 1) {
+          $scope.index[0] = $scope.transformData(selected, result, fileCount);
+        }else{
+          $scope.alerts('no index found with that query', 'danger');
+        }
       }
     };
 
 
-    /** checks the value to be selected
+    /** checks for a valid json file
      *
      * @param {String}  value to check
      * @return {Boolen}  true or flase
      */
-    $scope.isValidFile = function (file) {
+    $scope.isValidFile =  (file) => {
       return file.match(/\.json$/);
     };
 
-    /** gets the let oh an object
+    /** gets the length an object
      *
      * @param {Object}  value to check
      * @return {Int}  true or flase
      */
     $scope.length = (object) => {
       return Object.keys(object).length;
+    };
+
+
+    /**  configures the alert property
+     *
+     * @param {Strimg} message to alert
+     * @param {tye} type of message
+     * @param {Boolean} checks for falsy
+     * @param {Integer} time of display 
+     */
+    $scope.alerts =  (message, type, show, timeout) => {
+      $scope.alert = {
+        message: message,
+        type: type,
+        show: true
+      };
+      $timeout( () => {
+        $scope.alert.show = false;
+      }, timeout || 5000);
     };
   }]);
   

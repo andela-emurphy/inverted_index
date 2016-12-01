@@ -24,6 +24,7 @@ class InvertedIndex {
 
 
   /** creates an inverted index
+   * 
    * @param {String} file name
    * @return {Object} data to be indexed
    */
@@ -49,7 +50,7 @@ class InvertedIndex {
         }
       }
     } catch (e) {
-      return 'error';
+      return { error: 'invalid json format'};
     }
 
     this.indexedFiles[fileName] = terms;
@@ -89,3 +90,5 @@ class InvertedIndex {
     return found;
   }
 }
+
+

@@ -2,7 +2,7 @@
   "name": "inverted-index",
   "version": "1.0.0",
   "description": "inverted index",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
     "postinstall": "./node_modules/bower/bin/bower install"

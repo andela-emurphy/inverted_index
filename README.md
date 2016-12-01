@@ -1,3 +1,4 @@
+![alt](https://travis-ci.org/andela-emurphy/inverted_index.svg?branch=develop)  ![alt](https://coveralls.io/repos/github/andela-emurphy/inverted_index/badge.svg?branch=develop)
 # Inverted Index
 ------------------------------
 ## Introduction
@@ -5,6 +6,7 @@
 #### Technologies
 - Nodejs
 - Angularjs
+
 #### Local use or development
 - clone the repo
 - run npm install
@@ -15,3 +17,4 @@
 #### How should this be manually tested?  
 - run npm install 
 - run npm test
+

@@ -17,18 +17,10 @@
   ],
   "dependencies": {
     "angular": "^1.5.8",
-    "bootstrap": "^3.3.7",
     "animate.css": "^3.5.2",
     "font-awesome": "^4.7.0"
   },
   "overrides": {
-    "bootstrap": {
-      "main": [
-        "less/bootstrap.less",
-        "dist/js/bootstrap.js",
-        "dist/css/bootstrap.min.css"
-      ]
-    },
     "font-awesome": {
       "main": [
         "less/font-awesome.less",
