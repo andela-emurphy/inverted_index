@@ -87,7 +87,7 @@ angular.module('invertedIndex', [])
       } else {
         fileCount = $scope.fileCount[selected];
         result = indexer.searchIndex(query, selected);
-        if($scope.length(result) > 1) {
+        if($scope.length(result) > 0) {
           $scope.index[0] = $scope.transformData(selected, result, fileCount);
         }else{
           $scope.alerts('no index found with that query', 'danger');

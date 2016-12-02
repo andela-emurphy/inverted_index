@@ -1,10 +1,10 @@
-const gulp = require('gulp'),
-      inject = require('gulp-inject'),
-      browserSync = require('browser-sync').create(),
-      wiredep = require('wiredep').stream,
-      jshint = require('gulp-jshint'),
-      naturalSort = require('gulp-natural-sort'),
-      files = ['./src/css/*.css', './src/js/*.js', './src/js/**/*.js'];
+const gulp = require('gulp');
+const inject = require('gulp-inject');
+const browserSync = require('browser-sync').create();
+const wiredep = require('wiredep').stream;
+const jshint = require('gulp-jshint');
+const naturalSort = require('gulp-natural-sort');
+const files = ['./src/css/*.css', './src/js/*.js', './src/js/**/*.js'];
 
 gulp.task('lint', () => {
       gulp.src(['./src/js/*.js', './src/js/**/.js'])
@@ -12,7 +12,7 @@ gulp.task('lint', () => {
             .pipe(jshint.reporter('jshint-stylish'), {
                   verbose: true
             });
-});
+      });
 gulp.task('inject', () => {
       const wiredepOptions = {
             'bowerJson': require('./bower.json'),
@@ -40,7 +40,6 @@ gulp.task('serve', ['inject', 'lint', 'browser-sync'], () => {
       var files = ['./src/**/*.html', './src/*.htm', './src/css/*.css',
             './src/**/*.js', './src/*.js'
       ];
-      // gulp.watch(files, ['inject' ])
       gulp.watch(files).on('change', browserSync.reload);
 });
 

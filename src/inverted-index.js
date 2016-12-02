@@ -1,5 +1,3 @@
-'use strict';
-
 class InvertedIndex {
 
   /**
@@ -77,7 +75,7 @@ class InvertedIndex {
    * @return {Object} 
    */
   searchIndex(query, fileName) {
-    let fileToSearch = this.getIndex(fileName);
+    const fileToSearch = this.getIndex(fileName);
     let found = {};
     if (!query || typeof(fileToSearch) === 'string') {
       return 'no query to search';
