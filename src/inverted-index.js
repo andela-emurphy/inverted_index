@@ -62,7 +62,7 @@ class InvertedIndex {
    * @return {Object} file - the index file
    */
   getIndex(fileName) {
-    let file = this.indexedFiles[fileName];
+    const file = this.indexedFiles[fileName];
     return file? file : 'file not found';
   }
 

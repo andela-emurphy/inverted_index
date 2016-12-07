@@ -52,9 +52,9 @@ angular.module('invertedIndex', [])
       }
     };
 
-    /** searches for a query
+    /** searches  indexed files for 
      *
-     * @param {String} query = value to be searched
+     * @param {String} query alue to be searched
      * @return {void}  set the index value
      */
     $scope.searchIndex = (query) => {

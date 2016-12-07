@@ -37,7 +37,7 @@ gulp.task('browser-sync', () => {
       });
 });
 gulp.task('serve', ['inject', 'lint', 'browser-sync'], () => {
-      var files = ['./src/**/*.html', './src/*.htm', './src/css/*.css',
+      const files = ['./src/**/*.html', './src/*.htm', './src/css/*.css',
             './src/**/*.js', './src/*.js'
       ];
       gulp.watch(files).on('change', browserSync.reload);
