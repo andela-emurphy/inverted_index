@@ -1,0 +1,20 @@
+engines:
+  eslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+ratings:
+  paths:
+  - "**.js"
+exclude_paths:
+- "/coverage"
+- "/jasmine"
+- "/src/bower_components"
+env:
+  browser: true
+  es6: true
+  node: true
+  

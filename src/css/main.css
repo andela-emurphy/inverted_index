@@ -1,0 +1,117 @@
+body {
+  background: #e8e8e8;
+  height: 700px;
+}
+.main-container {
+  min-height: 100%;
+}
+.navbar-default,
+.btn-default {
+  background-color: #cd5c5c;
+  border-color: #cd5c5c;
+}
+
+.main-alert {
+  text-align: center;
+  background: red;
+  color: black
+}
+
+.alert-hidden {
+  visibility: hidden;
+}
+
+tbody {
+  background: #fff;
+}
+
+#file {
+  opacity: 0;
+}
+
+#file+label {
+  width: 200px;
+  height: 60px;
+  font-size: 20px;
+  padding: 15px;
+  background: #cd5c5c;
+  text-align: center;
+  color: #ffc5c5;
+  box-shadow: 0px 4px 4px #9c4949;
+  cursor: pointer;
+}
+
+h1 {
+  color: white;
+}
+
+.indexed-table h1 {
+  color: black;
+}
+
+.upload {
+  padding: 40px 50px;
+  text-align: center;
+}
+
+.upload>p {
+  font-size: 25px;
+}
+
+.index-table {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.search {
+  width: 100%;
+  margin: 20px auto;
+}
+
+.search .search-box {
+  width: 70%;
+}
+
+.search .search-btn {
+  float: left;
+}
+
+.search .search-file {
+  width: 20%;
+  float: left
+}
+
+.search input {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.search button {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+table thead {
+  background: #cd5c5c;
+  color: #fff;
+}
+
+table>thead>tr>th {
+  font-size: 20px;
+  padding: 15px;
+}
+
+footer {
+  background: #cd5c5c;
+  padding: 10px;
+  color: #fff;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Simple Inverted Index",
+  "description": "an algorithm for very fast full-text searches",
+  "repository": "https://github.com/andela-emurphy/inverted_index/tree/develop",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "angular"]
+}

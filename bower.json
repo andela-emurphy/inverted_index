@@ -1,0 +1,32 @@
+{
+  "name": "inverted-index",
+  "description": "inverted index",
+  "main": "index.js",
+  "authors": [
+    "enaho murphy"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/enahomurphy/inverted_index",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "animate.css": "^3.5.2",
+    "font-awesome": "^4.7.0"
+  },
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "less/font-awesome.less",
+        "scss/font-awesome.scss",
+        "css/font-awesome.css"
+      ]
+    }
+  }
+}
